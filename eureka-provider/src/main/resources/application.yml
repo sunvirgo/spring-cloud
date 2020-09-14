@@ -1,0 +1,37 @@
+spring:
+  profiles:
+    active: ${PROFILE}
+  application:
+    name: provider
+---
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://euk1:7001/eureka/
+  instance:
+    metadata-map:
+      nb: sunvirgo
+server:
+  port: 80
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+spring:
+  profiles: 80
+---
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://euk1:7001/eureka/
+  instance:
+    metadata-map:
+      nb: sunvirgo
+server:
+  port: 81
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+spring:
+  profiles: 81

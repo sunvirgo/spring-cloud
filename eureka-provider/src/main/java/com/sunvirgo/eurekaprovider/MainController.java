@@ -1,17 +1,14 @@
 package com.sunvirgo.eurekaprovider;
 
-import com.netflix.appinfo.InstanceInfo;
-import com.netflix.discovery.EurekaClient;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
+import java.net.URL;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * 类说明:
@@ -21,6 +18,8 @@ import java.util.List;
  **/
 @RestController
 public class MainController {
+    @Value("${server.port}")
+    String port;
     /**
      * 方法说明:
      * @author : 黄刚
@@ -30,6 +29,38 @@ public class MainController {
      */
     @GetMapping("/getHi")
     public String getHi(){
-        return "Hi";
+        return "Hi! port:"+port;
+    }
+
+    @GetMapping("/getMap")
+    public Map<String,String> getMap(){
+        return Collections.singletonMap("id","100");
+    }
+
+    @GetMapping("/getObj")
+    public Person getObj(){
+        Person person = new Person("100","xiao6");
+        return person;
+    }
+
+    @GetMapping("/getObj2")
+    public Person getObj2(String name){
+        Person person = new Person("100",name);
+        return person;
+    }
+
+    @PostMapping("/postParam")
+    public URL postParam(@RequestBody Person person, HttpServletResponse response) throws Exception {
+        URL uri = new URL("https://www.baidu.com/s?wd="+person.getName());
+        response.addHeader("Location", uri.toString());
+        return uri;
+    }
+
+    @Autowired
+    HealthStatusService hsrv;
+    @GetMapping("/health")
+    public String health(@RequestParam("status") Boolean status){
+        hsrv.setStatus(status);
+        return hsrv.getStatus();
     }
 }

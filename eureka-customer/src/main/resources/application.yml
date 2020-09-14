@@ -1,0 +1,48 @@
+spring:
+  profiles:
+    active: ${PROFILE}
+  application:
+    name: customer
+---
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://euk1:7001/eureka/
+  instance:
+    metadata-map:
+      nb: sunvirgo
+server:
+  port: 90
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+spring:
+  profiles: 90
+
+provider:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule
+---
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://euk1:7001/eureka/
+  instance:
+    metadata-map:
+      nb: sunvirgo
+server:
+  port: 91
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+spring:
+  profiles: 91
+#provider:
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.netflix.loadalancer.RandomRule
+#ribbon:
+#  listOfServers: localhost:80,localhost:81
+#  eureka:
+#    enabled: false
