@@ -17,12 +17,61 @@ management:
   endpoint:
     shutdown:
       enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 spring:
   profiles: 90
+ribbon:
+  #连接超时时间
+  ConnectTimeout:
+    1000
+  #业务逻辑超时时间
+  ReadTimeout:
+    500
+  #同一台实例最大重试次数,不包括首次调用
+  MaxAutoRetries:
+    3
+  #重试负载均衡其他的实例最大重试次数,不包括首次调用
+  MaxAutoRetriesNextServer:
+    3
+  #是否所有操作都重试
+  OkToRetryOnAllOperations:
+    false
+#开启熔断机制
+feign:
+  hystrix:
+    enabled: true
+#hystrix表盘监控配置
+hystrix:
+  dashboard:
+    proxy-stream-allow-list: "localhost"
+  command:
+    default:
+      execution:
+        isolation:
+          enabled: true
+          thread:
+            timeoutInMilliseconds: 10000
+            interruptOnTimeout: true
+          strategy: SEMAPHORE
+          semaphore:
+            maxConcurrentRequests: 15
 
-provider:
   ribbon:
     NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule
+
+#开启信号量隔离
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        isolation:
+#          strategy:
+#             SEMAPHORE
+
+
 ---
 eureka:
   client:
@@ -37,8 +86,28 @@ management:
   endpoint:
     shutdown:
       enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 spring:
   profiles: 91
+ribbon:
+  #连接超时时间
+  ConnectTimeout:
+    1000
+  #业务逻辑超时时间
+  ReadTimeout:
+    2000
+  #同一台实例最大重试次数,不包括首次调用
+  MaxAutoRetries:
+    1
+  #重试负载均衡其他的实例最大重试次数,不包括首次调用
+  MaxAutoRetriesNextServer:
+    1
+  #是否所有操作都重试
+  OkToRetryOnAllOperations:
+    false
 #provider:
 #  ribbon:
 #    NFLoadBalancerRuleClassName: com.netflix.loadalancer.RandomRule
@@ -46,3 +115,31 @@ spring:
 #  listOfServers: localhost:80,localhost:81
 #  eureka:
 #    enabled: false
+feign:
+  hystrix:
+    enabled: true
+#开启信号量隔离
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        isolation:
+#          strategy:
+#            SEMAPHORE
+#hystrix表盘监控配置
+hystrix:
+  dashboard:
+    proxy-stream-allow-list: "localhost"
+  command:
+    default:
+      execution:
+        isolation:
+          enabled: true
+          thread:
+            timeoutInMilliseconds: 10000
+            interruptOnTimeout: true
+          strategy: SEMAPHORE
+          semaphore:
+            maxConcurrentRequests: 15
+
+

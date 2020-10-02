@@ -9,6 +9,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 类说明:
@@ -20,6 +21,8 @@ import java.util.Map;
 public class MainController {
     @Value("${server.port}")
     String port;
+    private AtomicInteger count = new AtomicInteger();
+
     /**
      * 方法说明:
      * @author : 黄刚
